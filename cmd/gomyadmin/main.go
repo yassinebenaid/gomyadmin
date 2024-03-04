@@ -10,7 +10,11 @@ func main() {
 
 	e := echo.New()
 
-	routes.Register(e)
+	api := e.Group("/api/*")
+
+	for _, route := range routes.Routes {
+		api.Add(route.Method, route.Path, route.Handler)
+	}
 
 	e.FileFS("/*", "dist/index.html", web.StaticFS)
 	e.FileFS("/favicon.ico", "dist/favicon.ico", web.StaticFS)

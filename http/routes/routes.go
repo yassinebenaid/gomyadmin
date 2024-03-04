@@ -5,8 +5,14 @@ import (
 	"github.com/yassinebenaid/gomyadmin/http/handlers"
 )
 
-func Register(echo *echo.Echo) {
-	api := echo.Group("/api/*")
+type Route struct {
+	Method  string
+	Path    string
+	Handler echo.HandlerFunc
+}
 
-	api.GET("databases", handlers.ListDatabases)
+var DefaultMiddlewares = []echo.MiddlewareFunc{}
+
+var Routes = []Route{
+	{"GET", "databases", handlers.ListDatabases},
 }
