@@ -1,36 +1,29 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 	"github.com/yassinebenaid/gomyadmin/database"
+	"github.com/yassinebenaid/gomyadmin/database/repositories"
+	"github.com/yassinebenaid/gomyadmin/http/resources"
 )
 
 func ListDatabases(ctx echo.Context) error {
-	conn, err := database.Connect(database.Connection{
-		Username: "root",
-		Password: "password",
+	repository := repositories.DatabaseRepotitory{
+		Connection: database.Connection{
+			Username: "root",
+			Password: "password",
+		},
+	}
+
+	databases, err := repository.List()
+	if err != nil {
+		return err
+	}
+
+	return ctx.JSON(http.StatusOK, resources.DatabaseResource{
+		Data:  databases,
+		Total: len(databases),
 	})
-	if err != nil {
-		return fmt.Errorf("database connection error : %v", err)
-	}
-
-	r, err := conn.Query("show databases")
-	if err != nil {
-		return fmt.Errorf("database query error : %v", err)
-	}
-
-	var databases []string
-
-	for r.Next() {
-		var db_name string
-		if err := r.Scan(&db_name); err != nil {
-			return fmt.Errorf("database read error : %v", err)
-		}
-		databases = append(databases, db_name)
-	}
-
-	return ctx.JSON(http.StatusOK, databases)
 }
