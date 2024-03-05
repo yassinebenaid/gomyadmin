@@ -9,21 +9,21 @@ import (
 	"github.com/yassinebenaid/gomyadmin/http/resources"
 )
 
-func ListDatabases(ctx echo.Context) error {
-	repository := repositories.DatabaseRepotitory{
+func ListSchemas(ctx echo.Context) error {
+	repository := repositories.SchemaRepotitory{
 		Connection: database.Connection{
 			Username: "root",
 			Password: "password",
 		},
 	}
 
-	databases, err := repository.List()
+	schemas, err := repository.List()
 	if err != nil {
 		return err
 	}
 
-	return ctx.JSON(http.StatusOK, resources.DatabaseResource{
-		Data:  databases,
-		Total: len(databases),
+	return ctx.JSON(http.StatusOK, resources.SchemaResource{
+		Data:  schemas,
+		Total: len(schemas),
 	})
 }

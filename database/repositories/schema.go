@@ -7,11 +7,11 @@ import (
 	"github.com/yassinebenaid/gomyadmin/database/models"
 )
 
-type DatabaseRepotitory struct {
+type SchemaRepotitory struct {
 	Connection database.Connection
 }
 
-func (r DatabaseRepotitory) List() ([]models.Database, error) {
+func (r SchemaRepotitory) List() ([]models.Schema, error) {
 	conn, err := database.Connect(r.Connection)
 	if err != nil {
 		return nil, fmt.Errorf("database connection error : %v", err)
@@ -25,15 +25,15 @@ func (r DatabaseRepotitory) List() ([]models.Database, error) {
 		return nil, fmt.Errorf("database query error : %v", err)
 	}
 
-	var databases []models.Database
+	var schemas []models.Schema
 
 	for result.Next() {
-		var db models.Database
-		if err := result.Scan(&db.Name, &db.DefaultCharsetName, &db.DefaultCollationName, &db.DefaultEncryption); err != nil {
+		var s models.Schema
+		if err := result.Scan(&s.Name, &s.DefaultCharsetName, &s.DefaultCollationName, &s.DefaultEncryption); err != nil {
 			return nil, fmt.Errorf("database read error : %v", err)
 		}
-		databases = append(databases, db)
+		schemas = append(schemas, s)
 	}
 
-	return databases, nil
+	return schemas, nil
 }

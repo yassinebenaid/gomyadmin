@@ -1,6 +1,6 @@
 package models
 
-type Database struct {
+type Schema struct {
 	Name                 string `json:"name"`
 	DefaultCharsetName   string `json:"default_charset"`
 	DefaultCollationName string `json:"default_collation_name"`

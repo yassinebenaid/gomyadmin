@@ -14,5 +14,5 @@ type Route struct {
 var DefaultMiddlewares = []echo.MiddlewareFunc{}
 
 var Routes = []Route{
-	{"GET", "databases", handlers.ListDatabases},
+	{"GET", "schemas", handlers.ListSchemas},
 }

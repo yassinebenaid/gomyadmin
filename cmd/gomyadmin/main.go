@@ -12,7 +12,7 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 
-	api := e.Group("/api/*")
+	api := e.Group("/api/")
 
 	for _, route := range routes.Routes {
 		api.Add(route.Method, route.Path, route.Handler)
