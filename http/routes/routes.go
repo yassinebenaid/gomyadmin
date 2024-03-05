@@ -15,4 +15,5 @@ var DefaultMiddlewares = []echo.MiddlewareFunc{}
 
 var Routes = []Route{
 	{"GET", "schemas", handlers.ListSchemas},
+	{"GET", "collations", handlers.ListCollations},
 }
