@@ -13,9 +13,10 @@ func main() {
 	e.Use(middleware.Logger())
 
 	api := e.Group("/api/")
+	api.Use(routes.Middlewares...)
 
-	for _, route := range routes.Routes {
-		api.Add(route.Method, route.Path, route.Handler)
+	for _, r := range routes.Routes {
+		api.Add(r.Method, r.Path, r.Handler, r.Middlewares...)
 	}
 
 	e.FileFS("/*", "dist/index.html", web.StaticFS)

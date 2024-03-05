@@ -1,23 +1,18 @@
 package repositories
 
 import (
+	"database/sql"
 	"fmt"
 
-	"github.com/yassinebenaid/gomyadmin/database"
 	"github.com/yassinebenaid/gomyadmin/database/models"
 )
 
 type SchemaRepotitory struct {
-	Connection database.Connection
+	Connection *sql.DB
 }
 
-func (r SchemaRepotitory) SchemasList() ([]models.Schema, error) {
-	conn, err := database.Connect(r.Connection)
-	if err != nil {
-		return nil, fmt.Errorf("database connection error : %v", err)
-	}
-
-	result, err := conn.Query(`
+func (r SchemaRepotitory) ListSchemas() ([]models.Schema, error) {
+	result, err := r.Connection.Query(`
 		SELECT SCHEMA_NAME, DEFAULT_CHARACTER_SET_NAME, DEFAULT_COLLATION_NAME,DEFAULT_ENCRYPTION 
 		FROM information_schema.SCHEMATA
 	`)
@@ -38,13 +33,8 @@ func (r SchemaRepotitory) SchemasList() ([]models.Schema, error) {
 	return schemas, nil
 }
 
-func (r SchemaRepotitory) CollationsList() ([]models.Collation, error) {
-	conn, err := database.Connect(r.Connection)
-	if err != nil {
-		return nil, fmt.Errorf("database connection error : %v", err)
-	}
-
-	result, err := conn.Query(`
+func (r SchemaRepotitory) ListCollations() ([]models.Collation, error) {
+	result, err := r.Connection.Query(`
 		SELECT COLLATION_NAME, CHARACTER_SET_NAME, ID, IS_DEFAULT, IS_COMPILED, SORTLEN, PAD_ATTRIBUTE 
 		FROM information_schema.COLLATIONS
 	`)

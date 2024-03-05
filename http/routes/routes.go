@@ -3,17 +3,21 @@ package routes
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/yassinebenaid/gomyadmin/http/handlers"
+	"github.com/yassinebenaid/gomyadmin/http/middleware"
 )
 
-type Route struct {
-	Method  string
-	Path    string
-	Handler echo.HandlerFunc
+var Middlewares = []echo.MiddlewareFunc{
+	middleware.ConnectToDatabase,
 }
 
-var DefaultMiddlewares = []echo.MiddlewareFunc{}
+type Route struct {
+	Method      string
+	Path        string
+	Handler     echo.HandlerFunc
+	Middlewares []echo.MiddlewareFunc
+}
 
 var Routes = []Route{
-	{"GET", "schemas", handlers.ListSchemas},
-	{"GET", "collations", handlers.ListCollations},
+	{"GET", "schemas", handlers.ListSchemas, nil},
+	{"GET", "collations", handlers.ListCollations, nil},
 }
