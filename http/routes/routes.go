@@ -19,5 +19,6 @@ type Route struct {
 
 var Routes = []Route{
 	{"GET", "schemas", handlers.ListSchemas, nil},
+	{"POST", "schemas", handlers.CreateSchema, nil},
 	{"GET", "collations", handlers.ListCollations, nil},
 }

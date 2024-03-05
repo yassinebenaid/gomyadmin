@@ -54,3 +54,18 @@ func (r SchemaRepotitory) ListCollations() ([]models.Collation, error) {
 
 	return collations, nil
 }
+
+// TODO: complete this
+func (r SchemaRepotitory) CreateSchemas(schema models.Schema) error {
+	stat, err := r.Connection.Prepare("CREATE DATABASE IF NOT EXISTS $1 COLLATE $2 ENCRYPTION $3")
+	if err != nil {
+		return fmt.Errorf("database query error: %v", err)
+	}
+
+	_, err = stat.Exec(schema.Name, schema.DefaultCollationName, schema.DefaultEncryption)
+	if err != nil {
+		return fmt.Errorf("database query error : %v", err)
+	}
+
+	return nil
+}
