@@ -1,6 +1,8 @@
 package resources
 
+import "github.com/yassinebenaid/gomyadmin/database/models"
+
 type DatabaseResource struct {
-	Data  []string `json:"data"`
-	Total int      `json:"total"`
+	Data  []models.Database `json:"data"`
+	Total int               `json:"total"`
 }
